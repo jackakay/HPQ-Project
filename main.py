@@ -27,6 +27,10 @@ KP = (3242, 455, 245, 42)
 DeadPath = r"C:\Users\jackk\__HPQ school project\Dead"
 IdsPath = r"C:\Users\jackk\__HPQ school project\Ids"
 KillsPath = r"C:\Users\jackk\__HPQ school project\Kill Points"
+NamesPath = r"C:\Users\jackk\__HPQ school project\Names"
+PowerPath = r"C:\Users\jackk\__HPQ school project\Power"
+T4Path = r"C:\Users\jackk\__HPQ school project\T4"
+T5Path = r"C:\Users\jackk\__HPQ school project\T5"
 
 
 def grabInfo(location, type):

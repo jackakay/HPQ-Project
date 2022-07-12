@@ -33,9 +33,32 @@ T4Path = r"C:\Users\jackk\__HPQ school project\T4"
 T5Path = r"C:\Users\jackk\__HPQ school project\T5"
 
 
-def grabInfo(location, type):
-    image = pyautogui.screenshot(location)
-    image.save(type + ": " + str(currentNumber) + ".png", path=type)
+class Governor:
+    def __init__(self, deads, id, kills, name, power, t4, t5):
+        self.deads = deads
+        self.id = id
+        self.kills = kills
+        self.name = name
+        self.power = power
+        self.t4 = t4
+        self.t5 = t5
+
+
+def getPlayerInfo():
+    print("Getting name from user " + str(currentNumber) + ": ")
+    grabInfo(name, NamesPath)
+
+
+def mainProc():
+    click(RANK1)
+    getPlayerInfo()
+
+
+def grabInfo(location, pathOfType, type):
+    path = pathOfType + ": " + str(currentNumber) + ".png"
+    image = pyautogui.screenshot(path, region=location)
+
+    return pathOfType + ": "
 
 
 def scanImage(filename):

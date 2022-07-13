@@ -4,7 +4,7 @@ from PIL import Image
 import pytesseract
 
 currentNumber = 0
-
+numberOfGovs = 0
 # Constants for image location
 PROFILE = (83, 92)
 RANKINGS = (660, 807)
@@ -50,12 +50,37 @@ def getPlayerInfo():
     print("Governor name: " + nameOfGov)
     print("Getting ID from governor " + str(currentNumber) + ": ")
     IDOfGov = grabInfo(ID, IdsPath)
-    print("Governor ID: ")
+    print("Governor ID: " + IDOfGov)
+    print("Getting kill points from governor " + str(currentNumber) + ": ")
+    killsOfGov = grabInfo(KP, KillsPath)
+    print("Governor kill points: " + killsOfGov)
 
 
 def mainProc():
     click(RANK1)
+    time.sleep(1)
     getPlayerInfo()
+    time.sleep(1)
+    click(RANK2)
+    time.sleep(1)
+    getPlayerInfo()
+    time.sleep(1)
+    click(RANK3)
+    time.sleep(1)
+    getPlayerInfo()
+    time.sleep(1)
+    click(RANK4)
+    time.sleep(1)
+    getPlayerInfo()
+    time.sleep(1)
+    for i in range((numberOfGovs - 4):
+        click(RANK)
+        time.sleep(1)
+        getPlayerInfo()
+        time.sleep(1)
+
+
+        
 
 
 def grabInfo(location, pathOfType):
@@ -72,11 +97,12 @@ def scanImage(filename):
 
 def click(pos):
     pyautogui.moveTo(pos)
-    time.sleep(3)
+    time.sleep(1)
     pyautogui.click()
 
 
 def startup():
+    numberOfGovs = input("How many governors inforation should i grab?")
     click(PROFILE)
     click(RANKINGS)
     click(POWERRANKS)

@@ -45,8 +45,12 @@ class Governor:
 
 
 def getPlayerInfo():
-    print("Getting name from user " + str(currentNumber) + ": ")
-    grabInfo(name, NamesPath)
+    print("Getting name from governor " + str(currentNumber) + ": ")
+    nameOfGov = grabInfo(name, NamesPath)
+    print("Governor name: " + nameOfGov)
+    print("Getting ID from governor " + str(currentNumber) + ": ")
+    IDOfGov = grabInfo(ID, IdsPath)
+    print("Governor ID: ")
 
 
 def mainProc():
@@ -54,11 +58,12 @@ def mainProc():
     getPlayerInfo()
 
 
-def grabInfo(location, pathOfType, type):
+def grabInfo(location, pathOfType):
     path = pathOfType + ": " + str(currentNumber) + ".png"
     image = pyautogui.screenshot(path, region=location)
+    time.sleep(2)
 
-    return pathOfType + ": "
+    return scanImage(path)
 
 
 def scanImage(filename):

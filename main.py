@@ -9,6 +9,7 @@ numberOfGovs = 0
 PROFILE = (83, 92)
 RANKINGS = (660, 807)
 POWERRANKS = (463, 627)
+EXITRANK = (1600, 152)
 
 # first 5 ranks need to be hard coded in as they dont move positions.
 RANK1 = (948, 360)
@@ -31,6 +32,9 @@ NamesPath = r"C:\Users\jackk\__HPQ school project\Names"
 PowerPath = r"C:\Users\jackk\__HPQ school project\Power"
 T4Path = r"C:\Users\jackk\__HPQ school project\T4"
 T5Path = r"C:\Users\jackk\__HPQ school project\T5"
+
+def scanImage(filename):
+    return pytesseract.image_to_string(Image.open(filename))
 
 
 
@@ -62,6 +66,7 @@ def getPlayerInfo():
     print("Getting kill points from governor " + str(currentNumber) + ": ")
     killsOfGov = grabInfo(KP, KillsPath)
     print("Governor kill points: " + killsOfGov)
+    click(EXITRANK)
 
 def click(pos):
     pyautogui.moveTo(pos)
@@ -86,15 +91,12 @@ def mainProc():
     time.sleep(1)
     getPlayerInfo()
     time.sleep(1)
-    for i in range((numberOfGovs - 4):
+    for i in range((numberOfGovs - 4)):
         click(RANK)
         time.sleep(1)
         getPlayerInfo()
         time.sleep(1)
 
-
-def scanImage(filename):
-    return pytesseract.image_to_string(Image.open(filename))
 
 
 def startup():
@@ -102,6 +104,7 @@ def startup():
     click(PROFILE)
     click(RANKINGS)
     click(POWERRANKS)
+    mainProc()
 
 
 # Press the green button in the gutter to run the script.

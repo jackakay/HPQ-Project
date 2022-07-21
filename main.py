@@ -33,6 +33,14 @@ T4Path = r"C:\Users\jackk\__HPQ school project\T4"
 T5Path = r"C:\Users\jackk\__HPQ school project\T5"
 
 
+
+def grabInfo(location, pathOfType):
+    path = pathOfType + ": " + str(currentNumber) + ".png"
+    image = pyautogui.screenshot(path, region=location)
+    time.sleep(2)
+
+    return scanImage(path)
+
 class Governor:
     def __init__(self, deads, id, kills, name, power, t4, t5):
         self.deads = deads
@@ -54,6 +62,11 @@ def getPlayerInfo():
     print("Getting kill points from governor " + str(currentNumber) + ": ")
     killsOfGov = grabInfo(KP, KillsPath)
     print("Governor kill points: " + killsOfGov)
+
+def click(pos):
+    pyautogui.moveTo(pos)
+    time.sleep(1)
+    pyautogui.click()
 
 
 def mainProc():
@@ -80,25 +93,8 @@ def mainProc():
         time.sleep(1)
 
 
-        
-
-
-def grabInfo(location, pathOfType):
-    path = pathOfType + ": " + str(currentNumber) + ".png"
-    image = pyautogui.screenshot(path, region=location)
-    time.sleep(2)
-
-    return scanImage(path)
-
-
 def scanImage(filename):
     return pytesseract.image_to_string(Image.open(filename))
-
-
-def click(pos):
-    pyautogui.moveTo(pos)
-    time.sleep(1)
-    pyautogui.click()
 
 
 def startup():

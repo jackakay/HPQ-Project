@@ -2,9 +2,8 @@ import pyautogui
 import time
 from PIL import Image
 import pytesseract
+import csv
 
-#custom made library
-from csvexporter import *
 
 
 Governors = []
@@ -33,7 +32,7 @@ RANK = (948, 720)
 # locations where the photos are grabbed
 #talk about the problem of getting these locations and how i solved it in powerpoint and in summary of artefact aswell:)
 
-name = (757, 335, 331, 64)
+Name = (757, 335, 331, 64)
 ID = (904, 302, 115,51)
 KP = (1316, 458, 229, 45)
 dead = (1383, 534, 174, 66)
@@ -55,22 +54,18 @@ T4Path = r"C:\Users\jackk\__HPQ school project\HPQ-Project\T4"
 T5Path = r"C:\Users\jackk\__HPQ school project\HPQ-Project\T5"
 RssPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Rss"
 
-def csv_export(listOfObjs):
-    #tommorrow make this function work.
-def write_csv(listOfObjs, path):
-    csvString = csv_export(listOfObjs)
-    with open(path, "w") as w:
-        w.write(csvString)
-        w.close()
+def write_csv(listOfObjs):
+    header = ["Name", "ID", "Kills", "Power", "Dead", "T4 KP", "T5 KP", "Rss Assistance"]
+    with open('Data.csv', 'w', encoding='UTF8') as f:
+        writer = csv.writer(f)
+        writer.writerow(header)
+
+        for obj in listOfObjs:
+            data = [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
+            writer.writerow(data)
     
-
-
-
-
 def scanImage(filename):
     return pytesseract.image_to_string(Image.open(filename))
-
- 
 
 def grabInfo(location, pathOfType):
     path = (pathOfType + "\ " + str(currentNumber) + ".png")
@@ -100,7 +95,7 @@ def getPlayerInfo():
     global currentNumber
 
     print("Getting name from governor " + str(currentNumber) + ": ")
-    nameOfGov = grabInfo(name, NamesPath)
+    nameOfGov = grabInfo(Name, NamesPath)
     print("Governor name: " + nameOfGov)
 
     print("Getting ID from governor " + str(currentNumber) + ": ")
@@ -117,6 +112,7 @@ def getPlayerInfo():
 
     time.sleep(1)
     click(KILLPOINTS)
+    time.sleep(3)
     print("Getting t4 kills from governor " + str(currentNumber) + ": ")
     t4kills = grabInfo(t4, T4Path)
     print("Governor t4 kill points: " + t4kills)
@@ -140,32 +136,33 @@ def getPlayerInfo():
     gov = Governor(deads, IDOfGov, killsOfGov, nameOfGov, powerOfGov, t4kills, t5kills, resourceass)
     Governors.append(gov)
 
-
     currentNumber += 1
     click(EXITMOREINFO) #location to click of the more info screen
     click(EXITRANK)
 
 def mainProc():
     global numberOfGovs
-    click(RANK1)
-    time.sleep(3)
-    getPlayerInfo()
-    time.sleep(2)
-    
-    click(RANK2)
-    time.sleep(3)
-    getPlayerInfo()
-    time.sleep(2)
 
-    click(RANK3)
-    time.sleep(3)
-    getPlayerInfo()
-    time.sleep(2)
-    
-    click(RANK4)
-    time.sleep(3)
-    getPlayerInfo()
-    time.sleep(3)
+    if numberOfGovs == 1:
+        click(RANK1)
+        time.sleep(3)
+        getPlayerInfo()
+        time.sleep(2)
+    elif numberOfGovs == 2:
+        click(RANK2)
+        time.sleep(3)
+        getPlayerInfo()
+        time.sleep(2)
+    elif numberOfGovs == 3:
+        click(RANK3)
+        time.sleep(3)
+        getPlayerInfo()
+        time.sleep(2)
+    elif numberOfGovs == 4:
+        click(RANK4)
+        time.sleep(3)
+        getPlayerInfo()
+        time.sleep(3)
     
     for i in range((numberOfGovs - 4)):
         click(RANK)
@@ -173,8 +170,7 @@ def mainProc():
         getPlayerInfo()
         time.sleep(1)
 
-    write_csv(Governors, "export.csv")
-
+    write_csv(Governors)
 
 def startup():
     global numberOfGovs
@@ -184,8 +180,4 @@ def startup():
     click(POWERRANKS)
     mainProc()
 
-
-# Press the green button in the gutter to run the script.
 startup()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/

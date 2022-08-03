@@ -36,8 +36,7 @@ hash_to_check = getchecksum()
 )
 
 
-def insert():
-    print("start")
+
 
 def loginacc(license_, window):
     

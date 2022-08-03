@@ -4,8 +4,6 @@ from PIL import Image
 import pytesseract
 import csv
 
-
-
 Governors = []
 
 currentNumber = 1
@@ -25,8 +23,6 @@ RANK2 = (948, 480)
 RANK3 = (948, 600)
 RANK4 = (948, 720)
 
-
-
 # the game auto adjusts so no changes are need to be made.
 RANK = (948, 720)
 # locations where the photos are grabbed
@@ -40,9 +36,6 @@ rssass = (1352, 807, 204, 61)
 t4 = (1481, 866, 188, 44) #this is the points so be sure to /10 to find the number of t4 kills. Same applies for tier 5 but instead /20.
 t5 = (1481, 920, 188, 44)
 power = (1055, 455, 195, 45)
-
-
-
 
 # Paths for all of the files
 DeadPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Dead"
@@ -120,7 +113,6 @@ def getPlayerInfo():
     print("Getting t5 kills from governor " + str(currentNumber) + ": ")
     t5kills = grabInfo(t5, T5Path)
     print("Governor t5 kill points: " + t5kills)
-
 
     click(MOREINFO)
     time.sleep(2)

@@ -29,8 +29,7 @@ def getchecksum():
 
 keyauthapp = api(
 name = "RoK Stat Bot",
-ownerid = "wHLQ5y3bJv",
-secret = "cb587c247f898880bc6facf4827fbb7b26222a91977778436e17bbac5126fc15",
+ownerid = "",
 version = "1.0",
 hash_to_check = getchecksum()
 )

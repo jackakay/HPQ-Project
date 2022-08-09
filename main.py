@@ -1,6 +1,7 @@
+from django.forms import ImageField
 import pyautogui
 import time
-from PIL import Image
+from PIL import Image, ImageFilter
 import pytesseract
 import csv
 
@@ -64,9 +65,21 @@ def grabInfo(location, pathOfType):
     path = (pathOfType + "\ " + str(currentNumber) + ".png")
     image = pyautogui.screenshot(region=location)
     image.save(path)
+    
+    img = Image.open(path).convert("L").filter(ImageFilter.SHARPEN)
+    img.save(path);
     time.sleep(2)
+    
+    info = scanImage(path)
+    if not any(char.isdigit() for char in info):
+        info = scanImage(path)
+        if not any(char.isdigit() for char in info):
+            info = scanImage(path)
 
-    return scanImage(path)
+    return info
+
+
+
 
 class Governor:
     def __init__(self, deads, id, kills, name, power, t4, t5, rss):
@@ -120,7 +133,7 @@ def getPlayerInfo():
     deads = grabInfo(dead, DeadPath)
     print("Governor deads: " + deads)
 
-    print("Getting resource assistance from governor + " + str(currentNumber) + ": ")
+    print("Getting resource assistance from governor " + str(currentNumber) + ": ")
     resourceass = grabInfo(rssass, RssPath)
     print("Governor resource assistance: " + resourceass)
 
@@ -134,33 +147,56 @@ def getPlayerInfo():
 
 def mainProc():
     global numberOfGovs
+    if numberOfGovs < 5:
 
-    if numberOfGovs == 1:
+        if numberOfGovs == 1:
+            click(RANK1)
+            time.sleep(3)
+            getPlayerInfo()
+            time.sleep(2)
+        elif numberOfGovs == 2:
+            click(RANK2)
+            time.sleep(3)
+            getPlayerInfo()
+            time.sleep(2)
+        elif numberOfGovs == 3:
+            click(RANK3)
+            time.sleep(3)
+            getPlayerInfo()
+            time.sleep(2)
+        elif numberOfGovs == 4:
+            click(RANK4)
+            time.sleep(3)
+            getPlayerInfo()
+            time.sleep(3)
+    else:
         click(RANK1)
         time.sleep(3)
         getPlayerInfo()
         time.sleep(2)
-    elif numberOfGovs == 2:
+
         click(RANK2)
         time.sleep(3)
         getPlayerInfo()
         time.sleep(2)
-    elif numberOfGovs == 3:
+
         click(RANK3)
         time.sleep(3)
         getPlayerInfo()
         time.sleep(2)
-    elif numberOfGovs == 4:
+        
         click(RANK4)
         time.sleep(3)
         getPlayerInfo()
-        time.sleep(3)
+        time.sleep(2)
+
+        for i in range((numberOfGovs - 4)):
+            click(RANK)
+            time.sleep(3)
+            getPlayerInfo()
+            time.sleep(1)
     
-    for i in range((numberOfGovs - 4)):
-        click(RANK)
-        time.sleep(3)
-        getPlayerInfo()
-        time.sleep(1)
+    
 
     write_csv(Governors)
 
@@ -168,8 +204,11 @@ def startup():
     global numberOfGovs
     numberOfGovs = int(input("How many governors inforation should i grab?"))
     click(PROFILE)
+    time.sleep(2)
     click(RANKINGS)
+    time.sleep(2)
     click(POWERRANKS)
+    time.sleep(2)
     mainProc()
 
 startup()

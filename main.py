@@ -4,6 +4,8 @@ import time
 from PIL import Image, ImageFilter
 import pytesseract
 import csv
+from discord_hooks import Webhook
+
 
 Governors = []
 
@@ -71,10 +73,13 @@ def grabInfo(location, pathOfType):
     time.sleep(2)
     
     info = scanImage(path)
-    if not any(char.isdigit() for char in info):
-        info = scanImage(path)
+    if pathOfType == IdsPath:
         if not any(char.isdigit() for char in info):
             info = scanImage(path)
+            print("First test")
+            if not any(char.isdigit() for char in info):
+                info = scanImage(path)
+                print("Second test")
 
     return info
 
@@ -118,7 +123,7 @@ def getPlayerInfo():
 
     time.sleep(1)
     click(KILLPOINTS)
-    time.sleep(3)
+    time.sleep(2.5)
     print("Getting t4 kills from governor " + str(currentNumber) + ": ")
     t4kills = grabInfo(t4, T4Path)
     print("Governor t4 kill points: " + t4kills)
@@ -145,70 +150,81 @@ def getPlayerInfo():
     click(EXITMOREINFO) #location to click of the more info screen
     click(EXITRANK)
 
-def mainProc():
-    global numberOfGovs
-    if numberOfGovs < 5:
+def mainProc(kingdom, govs):
+    
+    webhook_url = "https://discord.com/api/webhooks/1006957426282598440/MnAuy8OPNm-WEoQZnLBTxAqVGRyzcOg2HYUXJkd6PGqP8llBDWi17TkoYvpvO26AtoBu"
+    embed = Webhook(webhook_url, color=123123)
+    embed.set_desc("User started scan for kingdom " + kingdom + " and is scanning " + str(govs) + "governors.")
+    embed.post()
+    if govs < 5:
 
-        if numberOfGovs == 1:
+        if govs == 1:
             click(RANK1)
-            time.sleep(3)
+            time.sleep(1.5)
             getPlayerInfo()
-            time.sleep(2)
-        elif numberOfGovs == 2:
+            time.sleep(1.5)
+        elif govs == 2:
             click(RANK2)
-            time.sleep(3)
+            time.sleep(1.5)
             getPlayerInfo()
-            time.sleep(2)
-        elif numberOfGovs == 3:
+            time.sleep(1.5)
+        elif govs == 3:
             click(RANK3)
-            time.sleep(3)
+            time.sleep(1.5)
             getPlayerInfo()
-            time.sleep(2)
-        elif numberOfGovs == 4:
+            time.sleep(1.5)
+        elif govs == 4:
             click(RANK4)
-            time.sleep(3)
+            time.sleep(1.5)
             getPlayerInfo()
-            time.sleep(3)
+            time.sleep(1.5)
     else:
         click(RANK1)
-        time.sleep(3)
+        time.sleep(1.5)
         getPlayerInfo()
-        time.sleep(2)
+        time.sleep(1.5)
 
         click(RANK2)
-        time.sleep(3)
+        time.sleep(1.5)
         getPlayerInfo()
-        time.sleep(2)
+        time.sleep(1.5)
 
         click(RANK3)
-        time.sleep(3)
+        time.sleep(1.5)
         getPlayerInfo()
-        time.sleep(2)
+        time.sleep(1.5)
         
         click(RANK4)
-        time.sleep(3)
+        time.sleep(1.5)
         getPlayerInfo()
-        time.sleep(2)
+        time.sleep(1.5)
 
-        for i in range((numberOfGovs - 4)):
+        for i in range((govs - 4)):
             click(RANK)
-            time.sleep(3)
+            time.sleep(1.5)
             getPlayerInfo()
             time.sleep(1)
     
     
 
-    write_csv(Governors)
+    end_embed = Webhook(webhook_url, color=123123)
+    end_embed.set_desc("User finished scan for kingdom " + kingdom + " and scanned " + str(govs) + "governors.")
+    
+    end_embed.post()
+    
+
+    write_csv(Governors) 
 
 def startup():
     global numberOfGovs
+    kingdom = input("Kingodom Number: ")
     numberOfGovs = int(input("How many governors inforation should i grab?"))
     click(PROFILE)
-    time.sleep(2)
+    time.sleep(1.5)
     click(RANKINGS)
-    time.sleep(2)
+    time.sleep(1.5)
     click(POWERRANKS)
-    time.sleep(2)
-    mainProc()
+    time.sleep(1.5)
+    mainProc(kingdom, numberOfGovs)
 
 startup()

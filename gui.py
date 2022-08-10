@@ -15,6 +15,7 @@ from keyauth import api
 
 loggedIn = False
 
+"""
 def getchecksum():
 	path = os.path.basename(__file__)
 	if not os.path.exists(path):
@@ -67,13 +68,16 @@ def login_window():
     button = Button(login, text="press", command= lambda: loginacc(str(token.get()), login), width=25, bg="#717070",activebackground="#EA3715").grid(pady= 10, row=6, column=1)
     login.mainloop()
 
-def draw_window(window):
+"""
+def draw_window():
     
    # #717070
     
-    master = Toplevel(window)
+    #master = Toplevel(window)
     
-    window.withdraw()
+    master = Tk()
+
+    
     master.title("Rise of Kingdoms Stat Bot")
     master.geometry("375x400")
     master.configure(bg="#383838")
@@ -105,7 +109,7 @@ def draw_window(window):
     governors.configure(bg="#717070", fg="white")
     governors.grid(row=7, column=1)
 
-    startButton = Button(master, bg= "#5EA04A", text="Start", width=15, activebackground="#4DC829",command= insert)
+    startButton = Button(master, bg= "#5EA04A", text="Start", width=15, activebackground="#4DC829")
     startButton.grid(row=9, column=1)
 
     abortButton = Button(master, bg= "#8E3E2F", text="Abort", width=15, activebackground="#EA3715")
@@ -133,5 +137,6 @@ def draw_window(window):
     master.mainloop()
 
    
-login_window()
+#login_window()
+draw_window()
 

@@ -7,6 +7,7 @@ import csv
 from discord_hooks import Webhook
 
 
+
 Governors = []
 
 currentNumber = 1
@@ -215,16 +216,24 @@ def mainProc(kingdom, govs):
 
     write_csv(Governors) 
 
-def startup():
-    global numberOfGovs
-    kingdom = input("Kingodom Number: ")
-    numberOfGovs = int(input("How many governors inforation should i grab?"))
-    click(PROFILE)
-    time.sleep(1.5)
-    click(RANKINGS)
-    time.sleep(1.5)
-    click(POWERRANKS)
-    time.sleep(1.5)
-    mainProc(kingdom, numberOfGovs)
+def startup(kingdom, numberOfGovs):
+    if kingdom == None and numberOfGovs == None:
+        print("Error")
+    else:
 
-startup()
+
+        print("STARTING BOT")
+    
+        click(PROFILE)
+        time.sleep(1.5)
+        click(RANKINGS)
+        time.sleep(1.5)
+        click(POWERRANKS)
+        time.sleep(1.5)
+        mainProc(kingdom, numberOfGovs)
+
+"""
+kingdomnum = input("Kingodom Number: ")
+numberOfGovs = int(input("How many governors inforation should i grab?"))
+startup(kingdomnum, numberOfGovs)
+"""

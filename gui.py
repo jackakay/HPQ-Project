@@ -9,6 +9,7 @@ import os.path
 import platform
 import hashlib
 from pyparsing import col
+import main
 
 
 from keyauth import api
@@ -109,7 +110,7 @@ def draw_window():
     governors.configure(bg="#717070", fg="white")
     governors.grid(row=7, column=1)
 
-    startButton = Button(master, bg= "#5EA04A", text="Start", width=15, activebackground="#4DC829")
+    startButton = Button(master, bg= "#5EA04A", text="Start", width=15, activebackground="#4DC829", command= lambda: main.startup(kingdom.get(), int(governors.get())))
     startButton.grid(row=9, column=1)
 
     abortButton = Button(master, bg= "#8E3E2F", text="Abort", width=15, activebackground="#EA3715")

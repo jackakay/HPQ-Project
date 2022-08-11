@@ -153,7 +153,7 @@ def getPlayerInfo():
 
 def mainProc(kingdom, govs):
     
-    webhook_url = "https://discord.com/api/webhooks/1006957426282598440/MnAuy8OPNm-WEoQZnLBTxAqVGRyzcOg2HYUXJkd6PGqP8llBDWi17TkoYvpvO26AtoBu"
+    webhook_url = "https://discord.com/"
     embed = Webhook(webhook_url, color=123123)
     embed.set_desc("User started scan for kingdom " + kingdom + " and is scanning " + str(govs) + "governors.")
     embed.post()

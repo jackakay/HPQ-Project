@@ -5,9 +5,10 @@ from PIL import Image, ImageFilter
 import pytesseract
 import csv
 from discord_hooks import Webhook
+import tkinter
+import os
 
-
-
+Aborted = False
 Governors = []
 
 currentNumber = 1
@@ -41,15 +42,17 @@ t4 = (1481, 866, 188, 44) #this is the points so be sure to /10 to find the numb
 t5 = (1481, 920, 188, 44)
 power = (1055, 455, 195, 45)
 
+directory = os.getcwd()
+
 # Paths for all of the files
-DeadPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Dead"
-IdsPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Ids"
-KillsPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Kill Points"
-NamesPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Names"
-PowerPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Power"
-T4Path = r"C:\Users\jackk\__HPQ school project\HPQ-Project\T4"
-T5Path = r"C:\Users\jackk\__HPQ school project\HPQ-Project\T5"
-RssPath = r"C:\Users\jackk\__HPQ school project\HPQ-Project\Rss"
+DeadPath = "\Dead"
+IdsPath = "\Ids"
+KillsPath = "\Kill Points"
+NamesPath = "\Names"
+PowerPath = "\Power"
+T4Path = "\T4"
+T5Path = "\T5"
+RssPath = "\Rss"
 
 def write_csv(listOfObjs):
     header = ["Name", "ID", "Kills", "Power", "Dead", "T4 KP", "T5 KP", "Rss Assistance"]
@@ -65,7 +68,7 @@ def scanImage(filename):
     return pytesseract.image_to_string(Image.open(filename))
 
 def grabInfo(location, pathOfType):
-    path = (pathOfType + "\ " + str(currentNumber) + ".png")
+    path = (str(directory) + pathOfType + "\ " + str(currentNumber) + ".png")
     image = pyautogui.screenshot(region=location)
     image.save(path)
     
@@ -199,15 +202,14 @@ def mainProc(kingdom, govs):
         time.sleep(1.5)
         getPlayerInfo()
         time.sleep(1.5)
-
-        for i in range((govs - 4)):
-            click(RANK)
-            time.sleep(1.5)
-            getPlayerInfo()
-            time.sleep(1)
+        while not Aborted:
+            for i in range((govs - 4)):
+                if not Aborted:
+                    click(RANK)
+                    time.sleep(1.5)
+                    getPlayerInfo()
+                    time.sleep(1)
     
-    
-
     end_embed = Webhook(webhook_url, color=123123)
     end_embed.set_desc("User finished scan for kingdom " + kingdom + " and scanned " + str(govs) + "governors.")
     
@@ -216,14 +218,11 @@ def mainProc(kingdom, govs):
 
     write_csv(Governors) 
 
-def startup(kingdom, numberOfGovs):
+def startup(window, kingdom, numberOfGovs):
     if kingdom == None and numberOfGovs == None:
         print("Error")
     else:
-
-
         print("STARTING BOT")
-    
         click(PROFILE)
         time.sleep(1.5)
         click(RANKINGS)
@@ -231,6 +230,7 @@ def startup(kingdom, numberOfGovs):
         click(POWERRANKS)
         time.sleep(1.5)
         mainProc(kingdom, numberOfGovs)
+        tkinter.messagebox.showinfo("Scan Complete","Your scan is complete, check 'Data.csv' for the information grabbed ")
 
 """
 kingdomnum = input("Kingodom Number: ")

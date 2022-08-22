@@ -12,7 +12,7 @@ from pyparsing import col
 import main
 
 
-from keyauth import api
+
 
 loggedIn = False
 

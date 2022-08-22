@@ -1,3 +1,4 @@
+from asyncore import write
 from django.forms import ImageField
 import pyautogui
 import time
@@ -7,9 +8,11 @@ import csv
 from discord_hooks import Webhook
 import tkinter
 import os
+import atexit
 
 Aborted = False
 Governors = []
+
 
 currentNumber = 1
 numberOfGovs = 0
@@ -45,14 +48,14 @@ power = (1055, 455, 195, 45)
 directory = os.getcwd()
 
 # Paths for all of the files
-DeadPath = "\Dead"
-IdsPath = "\Ids"
-KillsPath = "\Kill Points"
-NamesPath = "\Names"
-PowerPath = "\Power"
-T4Path = "\T4"
-T5Path = "\T5"
-RssPath = "\Rss"
+DeadPath = r"\Dead"
+IdsPath = r"\Ids"
+KillsPath = r"\Kill Points"
+NamesPath = r"\Names"
+PowerPath = r"\Power"
+T4Path = r"\T4"
+T5Path = r"\T5"
+RssPath = r"\Rss"
 
 def write_csv(listOfObjs):
     header = ["Name", "ID", "Kills", "Power", "Dead", "T4 KP", "T5 KP", "Rss Assistance"]
@@ -63,6 +66,11 @@ def write_csv(listOfObjs):
         for obj in listOfObjs:
             data = [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
             writer.writerow(data)
+
+
+def update_csv(obj):
+    data = [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
+
     
 def scanImage(filename):
     return pytesseract.image_to_string(Image.open(filename))
@@ -152,6 +160,7 @@ def getPlayerInfo():
 
     currentNumber += 1
     click(EXITMOREINFO) #location to click of the more info screen
+    time.sleep(1)
     click(EXITRANK)
 
 def mainProc(kingdom, govs):
@@ -161,7 +170,7 @@ def mainProc(kingdom, govs):
     embed.set_desc("User started scan for kingdom " + kingdom + " and is scanning " + str(govs) + "governors.")
     embed.post()
     if govs < 5:
-
+#doesnt actually work for getting the governors
         if govs == 1:
             click(RANK1)
             time.sleep(1.5)
@@ -208,7 +217,7 @@ def mainProc(kingdom, govs):
                     click(RANK)
                     time.sleep(1.5)
                     getPlayerInfo()
-                    time.sleep(1)
+                    time.sleep(2)
     
     end_embed = Webhook(webhook_url, color=123123)
     end_embed.set_desc("User finished scan for kingdom " + kingdom + " and scanned " + str(govs) + "governors.")
@@ -219,6 +228,7 @@ def mainProc(kingdom, govs):
     write_csv(Governors) 
 
 def startup(window, kingdom, numberOfGovs):
+    atexit.register(lambda : write_csv(Governors))
     if kingdom == None and numberOfGovs == None:
         print("Error")
     else:
@@ -230,7 +240,7 @@ def startup(window, kingdom, numberOfGovs):
         click(POWERRANKS)
         time.sleep(1.5)
         mainProc(kingdom, numberOfGovs)
-        tkinter.messagebox.showinfo("Scan Complete","Your scan is complete, check 'Data.csv' for the information grabbed ")
+        print("Scan Complete","Your scan is complete, check 'Data.csv' for the information grabbed ")
 
 """
 kingdomnum = input("Kingodom Number: ")

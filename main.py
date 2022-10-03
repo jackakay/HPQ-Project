@@ -9,6 +9,7 @@ from discord_hooks import Webhook
 import tkinter
 import os
 import atexit
+import threading
 
 Aborted = False
 Governors = []
@@ -64,14 +65,12 @@ def write_csv(listOfObjs):
         writer.writerow(header)
 
         for obj in listOfObjs:
-            data = [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
+            data = infoFromObject(obj)
             writer.writerow(data)
 
+def infoFromObject(obj):
+    return [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
 
-def update_csv(obj):
-    data = [obj.name, obj.id, obj.kills, obj.power, obj.deads, obj.t4, obj.t5, obj.rss]
-
-    
 def scanImage(filename):
     return pytesseract.image_to_string(Image.open(filename))
 
@@ -81,7 +80,7 @@ def grabInfo(location, pathOfType):
     image.save(path)
     
     img = Image.open(path).convert("L").filter(ImageFilter.SHARPEN)
-    img.save(path);
+    img.save(path)
     time.sleep(2)
     
     info = scanImage(path)
@@ -94,9 +93,6 @@ def grabInfo(location, pathOfType):
                 print("Second test")
 
     return info
-
-
-
 
 class Governor:
     def __init__(self, deads, id, kills, name, power, t4, t5, rss):
@@ -116,7 +112,8 @@ def click(pos):
 
 def getPlayerInfo():
     global currentNumber
-
+    #come back to this and add threading.
+    nameThread = threading.Thread(target=lambda: )
     print("Getting name from governor " + str(currentNumber) + ": ")
     nameOfGov = grabInfo(Name, NamesPath)
     print("Governor name: " + nameOfGov)

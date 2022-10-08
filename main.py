@@ -81,7 +81,7 @@ def grabInfo(location, pathOfType):
     
     img = Image.open(path).convert("L").filter(ImageFilter.SHARPEN)
     img.save(path)
-    time.sleep(2)
+    time.sleep(1)
     
     info = scanImage(path)
     if pathOfType == IdsPath:
@@ -132,7 +132,7 @@ def getPlayerInfo():
 
     time.sleep(1)
     click(KILLPOINTS)
-    time.sleep(2.5)
+    time.sleep(2)
     print("Getting t4 kills from governor " + str(currentNumber) + ": ")
     t4kills = grabInfo(t4, T4Path)
     print("Governor t4 kill points: " + t4kills)
@@ -142,7 +142,7 @@ def getPlayerInfo():
     print("Governor t5 kill points: " + t5kills)
 
     click(MOREINFO)
-    time.sleep(2)
+    time.sleep(1.5)
     print("Getting deads from governor + " + str(currentNumber) + ": ")
     deads = grabInfo(dead, DeadPath)
     print("Governor deads: " + deads)
@@ -214,7 +214,7 @@ def mainProc(kingdom, govs):
                     click(RANK)
                     time.sleep(1.5)
                     getPlayerInfo()
-                    time.sleep(2)
+                    time.sleep(1.5)
     
     end_embed = Webhook(webhook_url, color=123123)
     end_embed.set_desc("User finished scan for kingdom " + kingdom + " and scanned " + str(govs) + "governors.")

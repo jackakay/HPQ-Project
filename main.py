@@ -9,7 +9,7 @@ from discord_hooks import Webhook
 import tkinter
 import os
 import atexit
-import threading
+
 
 Aborted = False
 Governors = []
@@ -113,7 +113,7 @@ def click(pos):
 def getPlayerInfo():
     global currentNumber
     #come back to this and add threading.
-    nameThread = threading.Thread(target=lambda: )
+    
     print("Getting name from governor " + str(currentNumber) + ": ")
     nameOfGov = grabInfo(Name, NamesPath)
     print("Governor name: " + nameOfGov)
